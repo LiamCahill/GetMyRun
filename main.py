@@ -98,12 +98,20 @@ def print_result_values(result):
     except HttpError as err:
         print(err)
 
+def run_event_dto_test_creation():
+    logging.debug("Creating test DTO with default properties...")
+    run_event_default = RunEventDTO()
+    print(f'run_event_default day {run_event_default.getDay()}')
+    print(f'run_event_default date {run_event_default.getDate()}')
+    print(f'run_event_default run {run_event_default.getRun()}')
+
+    logging.debug("Creating test DTO with test properties...")
+    run_event_1 = RunEventDTO("Monday", "6/7/23", "test run")
+    print(f'run_event_1 day {run_event_1.getDay()}')
+    print(f'run_event_1 date {run_event_1.getDate()}')
+    print(f'run_event_1 run {run_event_1.getRun()}')
 
 def main():
-    run_event = RunEventDTO("Monday", "6/7/23", "test run")
-    print(run_event.getDay())
-    print(run_event.getDate())
-    print(run_event.getRun())
 
     creds = None
     creds = check_token(creds)
@@ -113,6 +121,8 @@ def main():
 
     result = get_results(service)
     print_result_values(result)
+
+    run_event_dto_test_creation()
 
 
 if __name__ == "__main__":
