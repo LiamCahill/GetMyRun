@@ -1,5 +1,4 @@
 import logging
-
 import gs_reader
 import todays_run
 

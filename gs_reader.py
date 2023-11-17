@@ -119,6 +119,7 @@ def print_result_values(result):
         for row in values:
             # Print columns A and E, which correspond to indices 0 and 4.
             print(f"{row[0]},{row[1]},{row[2]}")
+            RunEventDTO.weekday_helper(row[1])
     except HttpError as err:
         print(err)
 
@@ -135,3 +136,6 @@ def run_event_dto_test_creation():
     print(f'run_event_1 day {run_event_1.getDay()}')
     print(f'run_event_1 date {run_event_1.getDate()}')
     print(f'run_event_1 run {run_event_1.getRun()}')
+
+def create_run_dto():
+    return

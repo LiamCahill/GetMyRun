@@ -29,3 +29,16 @@ class RunEventDTO:
 
     def getRun(self):
         return self.run
+
+    def weekday_helper(raw_date):
+        #6/8/2023
+        date_info = raw_date.split("/")
+        day = date_info[0]
+        month = date_info[1]
+        year = date_info[2]
+        print(f'sliced info here: day: {month}, month: {day}, year: {year}')
+        weekday = datetime.date(int(year), int(month), int(day)).weekday()
+        print(f'weekday: {weekday}')
+
+        #print(f'weekday_helper {raw_date} and weekday is: {weekday}')
+
