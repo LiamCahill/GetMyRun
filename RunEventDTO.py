@@ -2,11 +2,11 @@ import datetime
 
 
 class RunEventDTO:
-    day = datetime.MINYEAR
-    date = datetime.MINYEAR
-    run = 0
+    # day = datetime.MINYEAR
+    # date = datetime.MINYEAR
+    # run = ""
 
-    def __init__(self, day=None, date=None, run=None):
+    def __init__(self, day, date, run):
         if day is None:
             print("Default constructor called for day")
             day = datetime.MINYEAR
@@ -31,14 +31,12 @@ class RunEventDTO:
         return self.run
 
     def weekday_helper(raw_date):
-        #6/8/2023
         date_info = raw_date.split("/")
-        day = date_info[0]
-        month = date_info[1]
+        month = date_info[0]
+        day = date_info[1]
         year = date_info[2]
-        print(f'sliced info here: day: {month}, month: {day}, year: {year}')
         weekday = datetime.date(int(year), int(month), int(day)).weekday()
-        print(f'weekday: {weekday}')
 
-        #print(f'weekday_helper {raw_date} and weekday is: {weekday}')
+    #def getWeekday(weekday_int):
+
 

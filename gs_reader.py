@@ -10,6 +10,7 @@ from googleapiclient.errors import HttpError
 from RunEventDTO import RunEventDTO
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
+RUNS = []
 
 
 def __init__(self, name):
@@ -25,9 +26,15 @@ def start_gs_reader():
     service = create_sheet_service(creds)
 
     result = get_results(service)
-    print_result_values(result)
-
+    # print_result_values(result)
     # run_event_dto_test_creation()
+
+    create_run_dto(result)
+
+    for index, item in enumerate(RUNS):
+        print(f"Index: {index}, Item: {item}")
+
+    print("Done!")
 
 
 def set_gs_reader_logging():
@@ -45,7 +52,7 @@ def check_credentials(creds):
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                "credentials.json.json", SCOPES
+                "./resources/credentials.json", SCOPES
             )
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
@@ -88,7 +95,7 @@ def get_range_name():
 
     range_name = input("Please enter spreadsheet range, or press enter for Sample")
     if not range_name:
-        range_name = "Sheet1!A2:C11"
+        range_name = "Sheet1!A2:C"
         # Might be a good idea to write functions for sheet name, row, col
     return range_name
 
@@ -115,27 +122,31 @@ def print_result_values(result):
 
     try:
         values = result.get("values", [])
+        # check_result_length(values)
         print("Day, Date, Run Plan")
         for row in values:
-            # Print columns A and E, which correspond to indices 0 and 4.
-            print(f"{row[0]},{row[1]},{row[2]}")
-            RunEventDTO.weekday_helper(row[1])
+            print(f"{row}")
     except HttpError as err:
-        print(err)
+        print(f'Error when printing: {err}')
+def check_result_length(values):
+    for row in values:
+        if len(row) != 3:
+            print("Length of less than three found.")
 
 
-def run_event_dto_test_creation():
-    logging.debug("Creating test DTO with default properties...")
-    run_event_default = RunEventDTO()
-    print(f'run_event_default day {run_event_default.getDay()}')
-    print(f'run_event_default date {run_event_default.getDate()}')
-    print(f'run_event_default run {run_event_default.getRun()}')
 
-    logging.debug("Creating test DTO with test properties...")
+def create_run_dto(results):
     run_event_1 = RunEventDTO("Monday", "6/7/23", "test run")
-    print(f'run_event_1 day {run_event_1.getDay()}')
-    print(f'run_event_1 date {run_event_1.getDate()}')
-    print(f'run_event_1 run {run_event_1.getRun()}')
+    # print(f'run_event_1 day {run_event_1.getDay()}')
+    # print(f'run_event_1 date {run_event_1.getDate()}')
+    # print(f'run_event_1 run {run_event_1.getRun()}')
 
-def create_run_dto():
+    values = results.get("values", [])
+
+    for row in values:
+        # TODO: I need to figure out a way to ensure the creation of the DTO, regardless of the 3rd columns value/null.
+        if len(values) != 3:
+            print(f'day:{row[0]} date:{row[1]} run:{row[2]}')
+            run = RunEventDTO(row[0],row[1],row[2])
+            RUNS.append(run)
     return

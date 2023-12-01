@@ -7,4 +7,3 @@ def __init__(self, name):
 
 def get_todays_run_info():
     today = datetime.date.today()
-    print(today)
