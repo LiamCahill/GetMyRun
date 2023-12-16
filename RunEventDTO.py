@@ -6,7 +6,7 @@ class RunEventDTO:
     # date = datetime.MINYEAR
     # run = ""
 
-    def __init__(self, day, date, run):
+    def __init__(self, day, date, run=None):
         if day is None:
             print("Default constructor called for day")
             day = datetime.MINYEAR
@@ -14,12 +14,13 @@ class RunEventDTO:
             print("Default constructor called for date")
             day = datetime.MINYEAR
         if run is None:
-            print("Default constructor called for run")
+            print("Imported a Run with no run description")
             run = "Default run"
 
         self.day = day
         self.date = date
         self.RunPlan = run
+
 
     def getDay(self):
         return self.day

@@ -31,8 +31,8 @@ def start_gs_reader():
 
     create_run_dto(result)
 
-    for index, item in enumerate(RUNS):
-        print(f"Index: {index}, Item: {item}")
+    print(f'RUNS length: {len(RUNS)}')
+
 
     print("Done!")
 
@@ -136,17 +136,30 @@ def check_result_length(values):
 
 
 def create_run_dto(results):
-    run_event_1 = RunEventDTO("Monday", "6/7/23", "test run")
-    # print(f'run_event_1 day {run_event_1.getDay()}')
-    # print(f'run_event_1 date {run_event_1.getDate()}')
-    # print(f'run_event_1 run {run_event_1.getRun()}')
+    """
+    There are instances where the sheet being imported will have a value in the day and date column, but with no run.
+    Example: The files ends on a rest day. like 12/6/23;
+        - day : Wednesday
+        - date : 12/6/23
+        - run :
+    Therefore, I need a way to validate the row, including under this scenario.
+    """
 
     values = results.get("values", [])
 
-    for row in values:
-        # TODO: I need to figure out a way to ensure the creation of the DTO, regardless of the 3rd columns value/null.
-        if len(values) != 3:
-            print(f'day:{row[0]} date:{row[1]} run:{row[2]}')
-            run = RunEventDTO(row[0],row[1],row[2])
+    for value in values:
+        try:
+            temp_run = value
+            run = RunEventDTO(temp_run[0],temp_run[1],temp_run[2])
+        except IndexError:
+            temp_run = value
+            run = RunEventDTO(temp_run[0],temp_run[1],None)
+        finally:
             RUNS.append(run)
+            print("Run object should have been created.")
+
     return
+
+def validate_final_result(results):
+    print(f'the final result is: {results[-1]}')
+    #if(results[-1])
